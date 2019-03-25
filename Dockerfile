@@ -1,11 +1,11 @@
 FROM ubuntu:18.04
 
-MAINTAINER Student Studencki <student.wazny@uj.edu.pl>
+MAINTAINER Michal Bator michal.bator@student.uj.edu.pl
 
 
 RUN useradd ujot --create-home
 
-RUN apt-get update
+RUN apt-get updatec
 RUN apt-get install -y vim unzip curl git
 
 ENV SCALA_VERSION 2.12.8
