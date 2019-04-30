@@ -1,10 +1,14 @@
 package controllers
 
+
 import dao.BookStorage
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.{AbstractController, ControllerComponents}
 import services.Counter
 import models.Book
+
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
 //noinspection TypeAnnotation
 @Singleton
@@ -12,8 +16,6 @@ class UserController @Inject()(cc: ControllerComponents,
                                counter: Counter, books: BookStorage) extends AbstractController(cc) {
 
   def loginForm = Action {
-    val book = Book(1, "kk", "d", 2)
-    books.insert(book)
     Ok(views.html.index("index"))
   }
 
@@ -34,6 +36,7 @@ class UserController @Inject()(cc: ControllerComponents,
   }
 
   def getAllBooks = Action {
+
     Ok(views.html.index("Controller OK"))
   }
 

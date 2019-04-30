@@ -23,6 +23,6 @@ libraryDependencies += "com.typesafe.play" %% "play-slick" % "3.0.3"
 
 libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "3.0.3"
 
-libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.12"
+libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.44"
 
 unmanagedResourceDirectories in Test <+= baseDirectory(_ / "target/web/public/test")

@@ -33,7 +33,7 @@ class BookStorage @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
       ) += (isbn, title, author)
   }
 
-  def insert(book: Book): Future[Unit] = dbConfig.db.run(books += book).map { _ => () }
+  def insert(book: Book): Future[String] = dbConfig.db.run(books += book).map(res => "Added")
 
   def list(): Future[Seq[Book]] = db.run {
     books.result
