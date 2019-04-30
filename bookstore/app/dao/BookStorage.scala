@@ -2,16 +2,13 @@ package dao
 
 import javax.inject.Inject
 import models.Book
-import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
+import slick.jdbc.MySQLProfile.api._
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class BookStorage @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
-  val dbConfig = dbConfigProvider.get[JdbcProfile]
-
-  import dbConfig._
-  import profile.api._
+class BookStorage @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
 
   class Books(tag: Tag) extends Table[Book](tag, "books") {
 
@@ -36,7 +33,7 @@ class BookStorage @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit e
       ) += (isbn, title, author)
   }
 
-  def insert(book: Book): Future[Unit] = db.run(books += book).map { _ => () }
+  def insert(book: Book): Future[Unit] = dbConfig.db.run(books += book).map { _ => () }
 
   def list(): Future[Seq[Book]] = db.run {
     books.result

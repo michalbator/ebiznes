@@ -4,16 +4,57 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
+GET         /                               controllers.HomeController.index
 # An example controller showing how to use dependency injection
-GET     /count                      controllers.CountController.count
+GET         /count                          controllers.CountController.count
 # An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
+GET         /message                        controllers.AsyncController.message
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file                   controllers.Assets.versioned(path="/public", file: Asset)
 
 # login
-GET     /login                      controllers.UserController.loginForm()
-POST    /login                      controllers.UserController.loginAction()
-GET     /logout                     controllers.UserController.logoutAction()
+GET         /login                          controllers.UserController.loginForm()
+POST        /login                          controllers.UserController.loginAction()
+GET         /logout                         controllers.UserController.logoutAction()
+
+# register
+GET         /register                       controllers.UserController.registerForm()
+POST        /register                       controllers.UserController.registerAction()
+
+# admin products
+GET         /admin/books/all                controllers.AdminController.getAllProducts()
+GET         /admin/books/add                controllers.AdminController.addProductForm()
+GET         /admin/books/edit               controllers.AdminController.editProductForm()
+POST        /admin/books/add                controllers.AdminController.addProduct()
+POST        /admin/books/:id/edit           controllers.AdminController.editProduct(id: Integer)
+POST        /admin/boooks/:id/delete        controllers.AdminController.deleteProduct(id: Integer)
+
+# admin orders
+GET         /admin/order/all                controllers.AdminController.getAllOrders()
+GET         /admin/order/:id                controllers.AdminController.showOrder(id: Integer)
+POST        /admin/order/:id                controllers.AdminController.editOrder(id: Integer)
+
+# admin users
+GET         /admin/users/all                controllers.AdminController.getAllUser()
+GET         /admin/users/edit               controllers.AdminController.editUserForm()
+GET         /admin/users/add                controllers.AdminController.addUserForm()
+POST        /admin/users/:id/edit           controllers.AdminController.editUser(id: Integer)
+POST        /admin/users/:id/add            controllers.AdminController.addUser(id: Integer)
+POST        /admin/users/:id/delete         controllers.AdminController.deleteUser(id: Integer)
+
+# products
+GET         /book/all                       controllers.UserController.getAllBooks()
+GET         /book/:id                       controllers.UserController.getBook(id: Integer)
+POST        /book/:id/buy                   controllers.UserController.buyBook(id: Integer)
+
+
+# orders
+POST        /orders/cancel                  controllers.UserController.cancelOrder()
+GET         /orders/all                     controllers.UserController.getAllOrders()
+GET         /orders/:id                     controllers.UserController.getOrder(id: Integer)
+
+# pages
+GET         /home                           controllers.HomeController.showHomePage()
+GET         /info                           controllers.HomeController.showInfoPage()
+GET         /contact                        controllers.HomeController.showContactPage()
