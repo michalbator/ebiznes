@@ -11,13 +11,13 @@ import scala.concurrent.{ExecutionContext, Future}
 class CountryStorage @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
 
 
-  class Countries(tag: Tag) extends Table[Country](tag, "authors") {
+  class Countries(tag: Tag) extends Table[Country](tag, "countries") {
 
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     def name = column[String]("name")
 
-    def shortName = column[String]("shortName")
+    def shortName = column[String]("short_name")
 
     def * = (id, name, shortName) <> ((Country.apply _).tupled, Country.unapply)
 

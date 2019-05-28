@@ -14,7 +14,6 @@ GET         /message                        controllers.AsyncController.message
 GET         /assets/*file                   controllers.Assets.versioned(path="/public", file: Asset)
 
 # login
-+nocsrf
 GET         /login                          controllers.UserController.loginForm()
 POST        /login                          controllers.UserController.loginAction()
 GET         /logout                         controllers.UserController.logoutAction()
@@ -25,11 +24,14 @@ POST        /register                       controllers.UserController.registerA
 
 # admin products
 GET         /admin/books/all                controllers.AdminController.getAllProducts()
-GET         /admin/books/add                controllers.AdminController.addProductForm()
-GET         /admin/books/edit               controllers.AdminController.editProductForm()
 POST        /admin/books/add                controllers.AdminController.addProduct()
 POST        /admin/books/:id/edit           controllers.AdminController.editProduct(id: Integer)
-POST        /admin/boooks/:id/delete        controllers.AdminController.deleteProduct(id: Integer)
+GET         /admin/boooks/:id/delete        controllers.AdminController.deleteProduct(id: Integer)
+
+GET         /admin/author/all               controllers.AdminController.getAllAuthors()
+POST        /admin/author/add               controllers.AdminController.addAuthor()
+POST        /admin/author/:id/              controllers.AdminController.getAuthor(id: Integer)
+POST        /admin/boooks/:id/delete        controllers.AdminController.deleteAuthor(id: Integer)
 
 # admin orders
 GET         /admin/order/all                controllers.AdminController.getAllOrders()
@@ -37,11 +39,9 @@ GET         /admin/order/:id                controllers.AdminController.showOrde
 POST        /admin/order/:id                controllers.AdminController.editOrder(id: Integer)
 
 # admin users
-GET         /admin/users/all                controllers.AdminController.getAllUser()
-GET         /admin/users/edit               controllers.AdminController.editUserForm()
-GET         /admin/users/add                controllers.AdminController.addUserForm()
+GET         /admin/users/all                controllers.AdminController.getAllUsers()
 POST        /admin/users/:id/edit           controllers.AdminController.editUser(id: Integer)
-POST        /admin/users/:id/add            controllers.AdminController.addUser(id: Integer)
+POST        /admin/users/add                controllers.AdminController.addUser()
 POST        /admin/users/:id/delete         controllers.AdminController.deleteUser(id: Integer)
 
 # products
@@ -49,6 +49,9 @@ GET         /book/all                       controllers.UserController.getAllBoo
 GET         /book/:id                       controllers.UserController.getBook(id: Integer)
 POST        /book/:id/buy                   controllers.UserController.buyBook(id: Integer)
 
+#countries
+GET         /admin/country/all              controllers.AdminController.getAllCountries()
+POST        /admin/country/add              controllers.AdminController.addCountry()
 
 # orders
 POST        /orders/cancel                  controllers.UserController.cancelOrder()

@@ -32,7 +32,7 @@ class UserStorage @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
       ) += (login, password)
   }
 
-  def insert(user: User): Future[Unit] = db.run(users += user).map { _ => () }
+  def insert(user: User): Future[Unit] = dbConfig.db.run(users += user).map { _ => () }
 
   def list(): Future[Seq[User]] = db.run {
     users.result

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Form example</title>
+    </head>
+    <body>
+        <@helper.form(action = routes.AdminController.addProduct) {
+        Id: <input type="text" name="id">
+        <br>
+        Isbn:<input type="text" name="isbn">
+        <br>
+        Title: <input type="text" name="title">
+        <br>
+        Author: <input type="text" name="author">
+        <br>
+        <input type="submit">
+        }
+    </body>
+</html>

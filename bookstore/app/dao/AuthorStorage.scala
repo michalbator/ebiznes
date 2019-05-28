@@ -32,7 +32,7 @@ class AuthorStorage @Inject()(protected val dbConfigProvider: DatabaseConfigProv
 
   def insert(author: Author): Future[Unit] = db.run(authors += author).map { _ => () }
 
-  def list(): Future[Seq[Product]] = db.run {
+  def list(): Future[Seq[Author]] = db.run {
     authors.result
   }
 

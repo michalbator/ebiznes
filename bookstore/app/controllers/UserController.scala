@@ -1,62 +1,65 @@
 package controllers
 
 
-import dao.BookStorage
+import dao.{BookStorage, OrderStorage}
+import forms.OrderForm.formOrder
 import javax.inject.{Inject, Singleton}
+import models.Order
 import play.api.mvc.{AbstractController, ControllerComponents}
 import services.Counter
-import models.Book
 
-import scala.concurrent.Await
-import scala.concurrent.duration.Duration
+import play.api.libs.json.Json
 
 //noinspection TypeAnnotation
 @Singleton
 class UserController @Inject()(cc: ControllerComponents,
-                               counter: Counter, books: BookStorage) extends AbstractController(cc) {
+                               counter: Counter, books: BookStorage, orders: OrderStorage) extends AbstractController(cc) {
 
   def loginForm = Action {
-    Ok(views.html.index("index"))
+    Ok(Json.toJson("User actions not yet implemented"))
   }
 
   def loginAction = Action {
-    Ok(views.html.index("Controller OK"))
+    Ok(Json.toJson("User actions not yet implemented"))
   }
 
   def logoutAction = Action {
-    Ok(views.html.index("Controller OK"))
+    Ok(Json.toJson("User actions not yet implemented"))
   }
 
   def registerForm() = Action {
-    Ok(views.html.index("Controller OK"))
+    Ok(Json.toJson("User actions not yet implemented"))
   }
 
   def registerAction() = Action {
-    Ok(views.html.index("Controller OK"))
+    Ok(Json.toJson("User actions not yet implemented"))
   }
 
   def getAllBooks = Action {
-
-    Ok(views.html.index("Controller OK"))
+    Ok(Json.toJson("User actions not yet implemented"))
   }
 
   def getBook(id: Integer) = Action {
-    Ok(views.html.index("Controller OK"))
+    Ok(Json.toJson("User actions not yet implemented"))
   }
 
   def buyBook(id: Integer) = Action {
-    Ok(views.html.index("Controller OK"))
+    Ok(Json.toJson("User actions not yet implemented"))
   }
 
   def cancelOrder() = Action {
-    Ok(views.html.index("Controller OK"))
+    Ok(Json.toJson("User actions not yet implemented"))
   }
 
   def getAllOrders = Action {
-    Ok(views.html.index("Controller OK"))
+    Ok(Json.toJson("User actions not yet implemented"))
   }
 
   def getOrder(id: Integer) = Action {
-    Ok(views.html.index("Controller OK"))
+    Ok(Json.toJson("User actions not yet implemented"))
+  }
+
+  def addOrder() = Action { implicit request =>
+    Ok(Json.toJson("User actions not yet implemented"))
   }
 }
