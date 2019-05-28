@@ -18,10 +18,12 @@ class Menu extends React.Component {
                     <NavLink className="nav-link" to='/country/add'>Dodaj kraj</NavLink>
                     <NavLink className="nav-link" to='/user/add'>Dodaj użytkownika</NavLink>
                     <NavLink className="nav-link" to='/author/add'>Dodaj autora</NavLink>
+                    <NavLink className="nav-link" to='/order/add'>Dodaj zamówienie</NavLink>
                     <NavLink className="nav-link" to="/book/list">Lista książek</NavLink>
                     <NavLink className="nav-link" to="/user/list">Lista użytkowników</NavLink>
                     <NavLink className="nav-link" to="/country/list">Lista państw</NavLink>
                     <NavLink className="nav-link" to='/author/list'>Lista autorów</NavLink>
+                    <NavLink className="nav-link" to='/order/list'>Lista zamówień</NavLink>
                 </div>
             </nav>
             <div className="content">
@@ -34,6 +36,8 @@ class Menu extends React.Component {
                     {id: "shortName", label: "Nazwa skrócona"}]} url={"admin/country/add"}/>}/>
                 <Route path="/author/add" component={() => <Form data={[{id: "name", label: "Imię i nazwisko"},
                     {id: "country", label: "Kraj"}]} url={"admin/author/add"}/>}/>
+                <Route path="/order/add" component={() => <Form data={[{id: "user", label: "Użytkownik"},
+                    {id: "status", label: "Status"}]} url={"admin/order/add"}/>}/>
                 <Route path="/book/list"
                        component={() => <Table headers={["ISBN", "Tytuł", "Autor"]} ids={["isbn", "title", "author"]}
                                                url={"admin/books/all"}/>}/>
@@ -46,6 +50,9 @@ class Menu extends React.Component {
                 <Route path="/author/list"
                        component={() => <Table headers={["Imię i nazwisko", "Kraj"]} ids={["name", "country"]}
                                                url={"admin/author/all"}/>}/>
+                <Route path="/order/list"
+                       component={() => <Table headers={["Użytkownik", "Status"]} ids={["user", "status"]}
+                                               url={"admin/order/all"}/>}/>
             </div>
         </HashRouter>
     }

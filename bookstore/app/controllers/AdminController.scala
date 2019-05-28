@@ -45,12 +45,11 @@ class AdminController @Inject()(cc: ControllerComponents, authors: AuthorStorage
     Ok(Json.toJson("ok"))
   }
 
-  def getAllOrders = Action {
+  def getAllOrders = Action.async { implicit reqest =>
     implicit val orderWrites = Json.writes[Order]
     orders.list().map({ order =>
       Ok(Json.toJson(order))
     })
-    Ok(views.html.index("Controller OK"))
   }
 
   def editOrder(id: Integer) = Action.async { implicit request =>
@@ -83,6 +82,13 @@ class AdminController @Inject()(cc: ControllerComponents, authors: AuthorStorage
     users.insert(user)
     implicit val userWrites = Json.writes[User]
     Ok(Json.toJson(user))
+  }
+
+  def addOrder() = Action { implicit request =>
+    val order: Order = formOrder.bindFromRequest().get
+    orders.insert(order)
+    implicit val OrderWrites = Json.writes[Order]
+    Ok(Json.toJson(order))
   }
 
   def getAllUsers() = Action.async { implicit request =>

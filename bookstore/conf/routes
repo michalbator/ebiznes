@@ -35,6 +35,7 @@ POST        /admin/boooks/:id/delete        controllers.AdminController.deleteAu
 
 # admin orders
 GET         /admin/order/all                controllers.AdminController.getAllOrders()
+POST        /admin/order/add                controllers.AdminController.addOrder()
 GET         /admin/order/:id                controllers.AdminController.showOrder(id: Integer)
 POST        /admin/order/:id                controllers.AdminController.editOrder(id: Integer)
 
