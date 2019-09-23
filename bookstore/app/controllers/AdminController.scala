@@ -5,17 +5,21 @@ import javax.inject.Inject
 import models._
 import play.api.mvc._
 import forms.BookForm.bookForm
-import forms.UserForm.formUser
 import forms.CountryForm.countryForm
 import forms.AuthorForm.authorForm
 import forms.OrderForm.formOrder
+import models.services.UserService
 import play.api.libs.functional.syntax._
+import scala.concurrent.duration._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Json
 
-class AdminController @Inject()(cc: ControllerComponents, authors: AuthorStorage, countries: CountryStorage, books: BookStorage, orders: OrderStorage, users: UserStorage) extends AbstractController(cc) {
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+
+class AdminController @Inject() (cc: ControllerComponents, authors: AuthorStorage, countries: CountryStorage, books: BookStorage, orders: OrderStorage, users: UserService) extends AbstractController(cc) {
 
   def getAllProducts() = Action.async { implicit request =>
     implicit val fooWrites = Json.writes[Book]
@@ -26,7 +30,7 @@ class AdminController @Inject()(cc: ControllerComponents, authors: AuthorStorage
 
   def addProduct = Action { implicit request =>
     val book: Book = bookForm.bindFromRequest().get
-    books.insert(book)
+    Await.result(books.insert(book), 20.seconds)
     implicit val bookWrites = Json.writes[Book]
     Ok(Json.toJson(book))
   }
@@ -52,6 +56,13 @@ class AdminController @Inject()(cc: ControllerComponents, authors: AuthorStorage
     })
   }
 
+  def getUserOrders(user: String) = Action.async { implicit reqest =>
+    implicit val orderWrites = Json.writes[Order]
+    orders.findByUser(user).map({ order =>
+      Ok(Json.toJson(order))
+    })
+  }
+
   def editOrder(id: Integer) = Action.async { implicit request =>
     val order: Order = formOrder.bindFromRequest().get
     orders.update(order.id, order)
@@ -68,39 +79,11 @@ class AdminController @Inject()(cc: ControllerComponents, authors: AuthorStorage
     })
   }
 
-  def editUser(id: Integer) = Action.async { implicit request =>
-    val user: User = formUser.bindFromRequest().get
-    users.update(user.id, user)
-    implicit val userWrites = Json.writes[User]
-    users.findById(id).map({ user =>
-      Ok(Json.toJson(user))
-    })
-  }
-
-  def addUser() = Action { implicit request =>
-    val user: User = formUser.bindFromRequest().get
-    users.insert(user)
-    implicit val userWrites = Json.writes[User]
-    Ok(Json.toJson(user))
-  }
-
   def addOrder() = Action { implicit request =>
     val order: Order = formOrder.bindFromRequest().get
     orders.insert(order)
     implicit val OrderWrites = Json.writes[Order]
     Ok(Json.toJson(order))
-  }
-
-  def getAllUsers() = Action.async { implicit request =>
-    implicit val userWrites = Json.writes[User]
-    users.list().map({ user =>
-      Ok(Json.toJson(user))
-    })
-  }
-
-  def deleteUser(id: Integer) = Action {
-    users.delete(id)
-    Ok(Json.toJson("ok"))
   }
 
   def addCountry = Action { implicit request =>

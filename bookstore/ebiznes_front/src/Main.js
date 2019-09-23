@@ -2,7 +2,7 @@ import React from "react";
 
 class Main extends React.Component {
     render() {
-        return <p>Strona główna</p>
+        return <p>Tu jest !!!</p>
     }
 }
 

@@ -1,14 +1,14 @@
 package dao
 
 import javax.inject.Inject
-import models.Book
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
+import models.{ Book, Country }
+import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
 import slick.jdbc.MySQLProfile.api._
 import slick.jdbc.JdbcProfile
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
-class BookStorage @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
+class BookStorage @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
 
   class Books(tag: Tag) extends Table[Book](tag, "books") {
 
@@ -26,14 +26,14 @@ class BookStorage @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
 
   val books = TableQuery[Books]
 
-  def create(id: Int, isbn: String, title: String, author: Int): Future[Book] = db.run {
-    (books.map(c => (c.isbn, c.title, c.author))
-      returning books.map(_.id)
-      into { case ((`isbn`, `title`, `author`), `id`) => Book(id, "dsf", "dsf", 1) }
-      ) += (isbn, title, author)
-  }
+  //  def create(id: Int, isbn: String, title: String, author: Int): Future[Book] = db.run {
+  //    (books.map(c => (c.isbn, c.title, c.author))
+  //      returning books.map(_.id)
+  //      into { case ((`isbn`, `title`, `author`), `id`) => Book(id, "dsf", "dsf", 1) }
+  //    ) += (isbn, title, author)
+  //  }
 
-  def insert(book: Book): Future[String] = dbConfig.db.run(books += book).map(res => "Added")
+  def insert(book: Book): Future[String] = db.run(books += book).map(res => "Added")
 
   def list(): Future[Seq[Book]] = db.run {
     books.result

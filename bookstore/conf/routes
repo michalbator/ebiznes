@@ -1,12 +1,38 @@
-
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# An example controller showing a sample home page
-GET         /                               controllers.HomeController.index
-# An example controller showing how to use dependency injection
-GET         /count                          controllers.CountController.count
+# Home page
+
+GET     /                           controllers.ApplicationController.index
+GET     /signOut                    controllers.ApplicationController.signOut
+GET     /authenticate/:provider     controllers.SocialAuthController.authenticate(provider)
+
+GET     /signUp                     controllers.SignUpController.view
+POST    /signUp                     controllers.SignUpController.submit
+
+GET     /signIn                     controllers.SignInController.view
+POST    /signIn                     controllers.SignInController.submit
+
+GET     /password/forgot            controllers.ForgotPasswordController.view
+POST    /password/forgot            controllers.ForgotPasswordController.submit
+GET     /password/reset/:token      controllers.ResetPasswordController.view(token: java.util.UUID)
+POST    /password/reset/:token      controllers.ResetPasswordController.submit(token: java.util.UUID)
+GET     /password/change            controllers.ChangePasswordController.view
+POST    /password/change            controllers.ChangePasswordController.submit
+
+GET     /account/email/:email       controllers.ActivateAccountController.send(email: String)
+GET     /account/activate/:token    controllers.ActivateAccountController.activate(token: java.util.UUID)
+
+
+GET     /home                       controllers.HomeController.home
+GET     /user/info                  controllers.ApplicationController.userInfo
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file                    controllers.Assets.at(path="/public", file)
+
+
 # An example controller showing how to write asynchronous code
 GET         /message                        controllers.AsyncController.message
 
@@ -35,15 +61,12 @@ POST        /admin/boooks/:id/delete        controllers.AdminController.deleteAu
 
 # admin orders
 GET         /admin/order/all                controllers.AdminController.getAllOrders()
+GET         /admin/order/user/:user         controllers.AdminController.getUserOrders(user: String)
++nocsrf
 POST        /admin/order/add                controllers.AdminController.addOrder()
++nocsrf
 GET         /admin/order/:id                controllers.AdminController.showOrder(id: Integer)
 POST        /admin/order/:id                controllers.AdminController.editOrder(id: Integer)
-
-# admin users
-GET         /admin/users/all                controllers.AdminController.getAllUsers()
-POST        /admin/users/:id/edit           controllers.AdminController.editUser(id: Integer)
-POST        /admin/users/add                controllers.AdminController.addUser()
-POST        /admin/users/:id/delete         controllers.AdminController.deleteUser(id: Integer)
 
 # products
 GET         /book/all                       controllers.UserController.getAllBooks()
@@ -58,8 +81,3 @@ POST        /admin/country/add              controllers.AdminController.addCount
 POST        /orders/cancel                  controllers.UserController.cancelOrder()
 GET         /orders/all                     controllers.UserController.getAllOrders()
 GET         /orders/:id                     controllers.UserController.getOrder(id: Integer)
-
-# pages
-GET         /home                           controllers.HomeController.showHomePage()
-GET         /info                           controllers.HomeController.showInfoPage()
-GET         /contact                        controllers.HomeController.showContactPage()

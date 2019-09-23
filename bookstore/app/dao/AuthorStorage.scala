@@ -2,13 +2,13 @@ package dao
 
 import javax.inject.Inject
 import models.Author
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
+import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
 import slick.jdbc.MySQLProfile.api._
 import slick.jdbc.JdbcProfile
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
-class AuthorStorage @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
+class AuthorStorage @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
 
   class Authors(tag: Tag) extends Table[Author](tag, "authors") {
 
@@ -23,12 +23,12 @@ class AuthorStorage @Inject()(protected val dbConfigProvider: DatabaseConfigProv
 
   val authors = TableQuery[Authors]
 
-  def create(id: Int, name: String, country: Int): Future[Author] = db.run {
-    (authors.map(c => (c.name, c.country))
-      returning authors.map(_.id)
-      into { case ((`name`, `country`), `id`) => Author(id, "dsf", 1) }
-      ) += (name, country)
-  }
+  //  def create(id: Int, name: String, country: Int): Future[Author] = db.run {
+  //    (authors.map(c => (c.name, c.country))
+  //      returning authors.map(_.id)
+  //      into { case ((`name`, `country`), `id`) => Author(id, "dsf", 1) }
+  //    ) += (name, country)
+  //  }
 
   def insert(author: Author): Future[Unit] = db.run(authors += author).map { _ => () }
 

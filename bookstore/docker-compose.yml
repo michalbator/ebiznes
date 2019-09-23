@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  app-server:
+    image: back
+    ports:
+      - "9000:9000"
+    restart: always
+    links: 
+      - db
+    tty: true
+
+  # Frontend Service 
+  app-client:
+    image: front
+    ports:
+      - "3000:3000" # Map the exposed port 80 on the container to port 9090 on the host machine
+    restart: always
+    links:
+      - app-server
+
+  # Database Service (Mysql)
+  db:
+    image: db
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - ./dump:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_DATABASE: biblioteka
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password

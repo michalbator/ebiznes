@@ -35,7 +35,8 @@ RUN \
   echo "sbt.version=${SBT_VERSION}" > project/build.properties && \
   echo "case object Temp" > Temp.scala && \
   sbt compile && \
-  rm -r project && rm build.sbt && rm Temp.scala && rm -r target
+  rm -r project && rm build.sbt && rm Temp.scala && rm -r target && \
+  sbt clean package run
 
 USER ujot
 

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {NavLink} from "react-router-dom";
 
 class Row extends Component {
 
@@ -9,7 +8,16 @@ class Row extends Component {
     }
 
     onclick() {
-        console.log(this.props.data);
+        fetch("http://localhost:9000/user/info")
+            .then((response) => response.text())
+            .then((data) => {
+                console.log(data);
+            });
+        fetch("http://localhost:9000/user/info")
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+            });
     }
 
     render() {
@@ -17,9 +25,7 @@ class Row extends Component {
             <tr>
                 {this.props.ids.map(data => <td key={data}>{this.props.data[data]}</td>)}
                 <td>
-                    <button onClick={this.onclick} value="Szczegóły"/>
-                    <NavLink className="btn btn-outline-primary" to="/">Szczegóły</NavLink>
-                    <a href="/">Klik</a>
+                    <button onClick={this.onclick} value="Kup"/>
                 </td>
             </tr>
         );

@@ -11,8 +11,9 @@ object OrderForm {
   val formOrder = Form(
     mapping(
       "id" -> number,
-      "user" -> number,
-      "status" -> nonEmptyText
+      "user" -> nonEmptyText,
+      "status" -> nonEmptyText,
+      "book" -> number
     )(Order.apply)(Order.unapply)
   )
 }

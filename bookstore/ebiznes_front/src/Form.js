@@ -1,6 +1,6 @@
 import React from "react";
 
-class BookForm extends React.Component {
+class Form extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,4 +32,4 @@ class BookForm extends React.Component {
     }
 }
 
-export default BookForm;
+export default Form;

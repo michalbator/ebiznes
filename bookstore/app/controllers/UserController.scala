@@ -1,19 +1,14 @@
 package controllers
 
-
-import dao.{BookStorage, OrderStorage}
-import forms.OrderForm.formOrder
-import javax.inject.{Inject, Singleton}
-import models.Order
-import play.api.mvc.{AbstractController, ControllerComponents}
-import services.Counter
-
+import dao._
+import javax.inject.Inject
+import play.api.mvc._
 import play.api.libs.json.Json
 
 //noinspection TypeAnnotation
-@Singleton
-class UserController @Inject()(cc: ControllerComponents,
-                               counter: Counter, books: BookStorage, orders: OrderStorage) extends AbstractController(cc) {
+class UserController @Inject() (
+  cc: ControllerComponents,
+  books: BookStorage, orders: OrderStorage) extends AbstractController(cc) {
 
   def loginForm = Action {
     Ok(Json.toJson("User actions not yet implemented"))

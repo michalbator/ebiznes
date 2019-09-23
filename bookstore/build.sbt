@@ -1,28 +1,80 @@
-name := "bookstore"
+import com.typesafe.sbt.SbtScalariform._
 
-version := "1.0"
+import scalariform.formatter.preferences._
 
-lazy val `bookstore` = (project in file(".")).enablePlugins(PlayScala)
+name := "play-silhouette-seed"
 
-resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
+version := "6.0.0"
 
-resolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
+scalaVersion := "2.12.8"
 
-resolvers += "typesafe" at "http://repo.typesafe.com/typesafe/releases/"
+resolvers += Resolver.jcenterRepo
 
-scalaVersion := "2.12.2"
-
-libraryDependencies ++= Seq(ehcache, ws, specs2 % Test, guice, evolutions)
+resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.slick" %% "slick" % "3.2.0",
-  "org.slf4j" % "slf4j-nop" % "1.6.4"
+  "com.mohiva" %% "play-silhouette" % "6.0.0-SNAPSHOT",
+  "com.mohiva" %% "play-silhouette-password-bcrypt" % "6.0.0-SNAPSHOT",
+  "com.mohiva" %% "play-silhouette-persistence" % "6.0.0-SNAPSHOT",
+  "com.mohiva" %% "play-silhouette-crypto-jca" % "6.0.0-SNAPSHOT",
+  "org.webjars" %% "webjars-play" % "2.7.0",
+  "org.webjars" % "bootstrap" % "3.3.7-1" exclude("org.webjars", "jquery"),
+  "org.webjars" % "jquery" % "3.2.1",
+  "net.codingwell" %% "scala-guice" % "4.1.0",
+  "com.iheart" %% "ficus" % "1.4.3",
+  "com.typesafe.play" %% "play-mailer" % "7.0.0",
+  "com.typesafe.play" %% "play-mailer-guice" % "7.0.0",
+  "com.enragedginger" %% "akka-quartz-scheduler" % "1.6.1-akka-2.5.x",
+  "com.adrianhurt" %% "play-bootstrap" % "1.4-P26-B3-SNAPSHOT",
+  "com.mohiva" %% "play-silhouette-testkit" % "6.0.0-SNAPSHOT" % "test",
+  "mysql" % "mysql-connector-java" % "5.1.47",
+  specs2 % Test,
+  ehcache,
+  guice,
+  filters
 )
 
 libraryDependencies += "com.typesafe.play" %% "play-slick" % "3.0.3"
-
 libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "3.0.3"
 
-libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.44"
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-unmanagedResourceDirectories in Test <+= baseDirectory(_ / "target/web/public/test")
+routesImport += "utils.route.Binders._"
+
+// https://github.com/playframework/twirl/issues/105
+TwirlKeys.templateImports := Seq()
+
+scalacOptions ++= Seq(
+  "-deprecation", // Emit warning and location for usages of deprecated APIs.
+  "-feature", // Emit warning and location for usages of features that should be imported explicitly.
+  "-unchecked", // Enable additional warnings where generated code depends on assumptions.
+  "-Xfatal-warnings", // Fail the compilation if there are any warnings.
+  //"-Xlint", // Enable recommended additional warnings.
+  "-Ywarn-adapted-args", // Warn if an argument list is modified to match the receiver.
+  "-Ywarn-dead-code", // Warn when dead code is identified.
+  "-Ywarn-inaccessible", // Warn about inaccessible types in method signatures.
+  "-Ywarn-nullary-override", // Warn when non-nullary overrides nullary, e.g. def foo() over def foo.
+  "-Ywarn-numeric-widen", // Warn when numerics are widened.
+  // Play has a lot of issues with unused imports and unsued params
+  // https://github.com/playframework/playframework/issues/6690
+  // https://github.com/playframework/twirl/issues/105
+  "-Xlint:-unused,_"
+)
+
+javaOptions in Universal ++= Seq(
+  "-Dpidfile.path=/dev/null"
+)
+
+enablePlugins(JavaAppPackaging)
+enablePlugins(DockerPlugin)
+
+//********************************************************
+// Scalariform settings
+//********************************************************
+
+scalariformAutoformat := true
+
+ScalariformKeys.preferences := ScalariformKeys.preferences.value
+  .setPreference(FormatXml, false)
+  .setPreference(DoubleIndentConstructorArguments, false)
+  .setPreference(DanglingCloseParenthesis, Preserve)

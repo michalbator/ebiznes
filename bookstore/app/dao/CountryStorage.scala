@@ -1,15 +1,16 @@
 package dao
 
+import com.mysql.jdbc.log.Log
 import javax.inject.Inject
-import models.Country
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
+import models.{ Book, Country }
+import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
 import slick.jdbc.MySQLProfile.api._
 import slick.jdbc.JdbcProfile
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
+import scala.util.{ Failure, Success }
 
-class CountryStorage @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
-
+class CountryStorage @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
 
   class Countries(tag: Tag) extends Table[Country](tag, "countries") {
 
@@ -25,14 +26,17 @@ class CountryStorage @Inject()(protected val dbConfigProvider: DatabaseConfigPro
 
   val countries = TableQuery[Countries]
 
-  def create(id: Int, name: String, shortName: String): Future[Country] = db.run {
-    (countries.map(c => (c.name, c.shortName))
-      returning countries.map(_.id)
-      into { case ((`name`, `shortName`), `id`) => Country(id, "dsf", "dsf") }
-      ) += (name, shortName)
-  }
+  //  def create(id: Int, name: String, shortName: String): Future[Country] = db.run {
+  //    (countries.map(c => (c.name, c.shortName))
+  //      returning countries.map(_.id)
+  //      into { case ((`name`, `shortName`), `id`) => Country(id, "dsf", "dsf") }
+  //    ) += (name, shortName)
+  //  }
 
-  def insert(country: Country): Future[Unit] = db.run(countries += country).map { _ => () }
+  def insert(country: Country): Unit = db.run(countries += country).onComplete {
+    case Success(r) ⇒ println("OKKKK")
+    case Failure(t) ⇒ println("failure in db query " + t.getMessage)
+  }
 
   def list(): Future[Seq[Country]] = db.run {
     countries.result
